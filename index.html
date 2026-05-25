@@ -6,7 +6,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Otto y 10 lucas</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 /* ══════════════════════════════════════════════════════════
    TEMAS — Otto y 10 lucas · Plan Full
@@ -974,6 +973,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(1); }
 <div class="cola-badge" id="cola-badge" onclick="reintentarCola()"></div>
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 // ══════════════════════════════════════════════════════════
 // OTTO Y 10 LUCAS — PLAN FULL
@@ -1004,7 +1004,12 @@ let configMets = [];
 
 const MESES_LABEL = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
-if (scriptUrl) iniciarApp();
+// Auto-inicio al cargar
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => { if (scriptUrl) iniciarApp(); });
+} else {
+  if (scriptUrl) iniciarApp();
+}
 
 // ── SETUP ─────────────────────────────────────────────────
 function guardar() {
