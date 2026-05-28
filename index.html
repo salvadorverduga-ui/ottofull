@@ -523,7 +523,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
   <div class="header"><h1>🪙 Otto y 10 lucas</h1><p>Conecta tu Google Apps Script para empezar</p></div>
   <div class="config">
     <label>URL de tu Google Apps Script</label>
-    <input type="url" id="url-input" placeholder="https://script.google.com/macros/s/..." />
+    <input type="text" id="url-input" placeholder="https://script.google.com/macros/s/..." onkeydown="if(event.key==='Enter')guardar()" />
     <button class="save-btn" onclick="guardar()">Conectar</button>
   </div>
 </div>
@@ -1224,7 +1224,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
     <div id="ajustes-url-display" style="color:var(--text-sub);font-size:11px;word-break:break-all;background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;padding:10px;margin-bottom:10px;font-family:monospace;"></div>
     <button onclick="mostrarCambiarUrl()" style="width:100%;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;">Cambiar URL</button>
     <div id="cambiar-url-form" style="display:none;margin-top:10px;">
-      <input type="url" id="ajustes-url-input" placeholder="https://script.google.com/macros/s/..." style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:10px;width:100%;outline:none;margin-bottom:8px;" />
+      <input type="text" id="ajustes-url-input" placeholder="https://script.google.com/macros/s/..." style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:10px;width:100%;outline:none;margin-bottom:8px;" />
       <div style="display:flex;gap:8px;">
         <button onclick="guardarNuevaUrl()" style="flex:1;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;">Guardar</button>
         <button onclick="cancelarCambioUrl()" style="flex:1;background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--muted);font-size:13px;padding:10px;cursor:pointer;">Cancelar</button>
