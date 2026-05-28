@@ -470,6 +470,50 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 .umbral-input { background: var(--input-bg); border: 1px solid var(--card-brd); border-radius: 8px; color: var(--accent); font-size: 16px; font-weight: 700; padding: 6px 10px; width: 72px; outline: none; text-align: center; }
 .umbral-save { background: var(--accent-dim); border: 1px solid var(--accent-brd); border-radius: 8px; color: var(--accent); font-size: 12px; padding: 6px 12px; cursor: pointer; }
 .convert-btn { background: #1a1a2a; border: 1px solid #3a2a5a; border-radius: 8px; color: #b49fd4; font-size: 12px; padding: 6px 10px; cursor: pointer; flex: 1; }
+
+/* ── Título editable ── */
+.app-title-wrap { display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.app-title-icon { font-size:26px; }
+.app-title-text { font-size:22px; font-weight:600; }
+.app-title-text.hidden { display:none; }
+
+/* ── Botón home cat/met con gasto ── */
+.home-btn-gasto { font-size:11px; color:var(--expense); font-weight:600; margin-top:2px; }
+
+/* ── Barra búsqueda historial ── */
+.hist-search-wrap { position:relative; margin-bottom:8px; }
+.hist-search-input { background:var(--input-bg); border:1px solid var(--card-brd); border-radius:10px; color:var(--text); font-size:13px; padding:9px 12px 9px 34px; width:100%; outline:none; }
+.hist-search-icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:14px; pointer-events:none; }
+.hist-search-clear { position:absolute; right:10px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:16px; cursor:pointer; display:none; background:none; border:none; padding:0; }
+.hist-search-clear.visible { display:block; }
+
+/* ── Undo banner ── */
+.undo-banner { background:#1a1000; border:1px solid #4a2800; border-radius:10px; color:#e8a838; font-size:12px; padding:10px 14px; margin-bottom:10px; display:none; align-items:center; justify-content:space-between; gap:10px; }
+.undo-banner.visible { display:flex; }
+.undo-btn { background:#2a1800; border:1px solid #5a3000; border-radius:6px; color:#e8a838; font-size:12px; padding:5px 12px; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+
+/* ── Sección ajustes config ── */
+.ajuste-config-section { background:var(--card); border:1px solid var(--card-brd); border-radius:12px; padding:16px; margin-bottom:12px; }
+.ajuste-config-title { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:.5px; margin-bottom:12px; }
+.config-item-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--card-brd); gap:8px; }
+.config-item-row:last-child { border-bottom:none; }
+.config-item-info { flex:1; }
+.config-item-nombre { font-size:13px; color:var(--text); }
+.config-item-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+.config-item-btns { display:flex; gap:6px; flex-shrink:0; }
+.config-del-btn { background:#2a1a1a; border:1px solid #5a2a2a; border-radius:6px; color:var(--danger); font-size:11px; padding:4px 8px; cursor:pointer; }
+
+/* ── Presupuesto claro ── */
+.pres-config-row { background:var(--card); border:1px solid var(--card-brd); border-radius:10px; padding:12px 14px; margin-bottom:8px; }
+.pres-config-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.pres-config-nombre { font-size:13px; font-weight:600; color:var(--text); }
+.pres-config-monto { font-size:13px; color:var(--accent); font-weight:700; }
+.pres-config-pct { font-size:11px; margin-top:4px; }
+
+/* ── Corte de ciclo en nuevo método ── */
+.met-corte-field { display:none; margin-top:8px; }
+.met-corte-field.visible { display:block; }
+
 </style>
 </head>
 <body>
@@ -488,7 +532,10 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 <div id="app" style="display:none">
 
   <div class="header">
-    <h1 onclick="irAlSheets()">🪙 Otto y 10 lucas</h1>
+    <div class="app-title-wrap" onclick="irAlSheets()" id="app-title-wrap">
+      <span class="app-title-icon" id="app-title-icon">🪙</span>
+      <span class="app-title-text" id="app-title-text">Otto y 10 lucas</span>
+    </div>
     <p id="status"><span class="connected">Conectado</span></p>
   </div>
 
@@ -610,30 +657,15 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
     <div id="campos-gasto">
       <div class="form-field">
         <label>Categoría</label>
-        <div class="pill-group" id="cat-pills">
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Transporte">🚗 Transporte</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Comida">🍔 Comida</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Trámites">📋 Trámites</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Estado cuenta">📊 Estado cuenta</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Tienda">🛒 Tienda</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Ocio">🎮 Ocio</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Family">👨‍👩‍👧 Family</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Arriendo">🏠 Arriendo</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Necesidad">🧾 Necesidad</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Herramienta">🔧 Herramienta</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Vestimenta">👔 Vestimenta</div>
-          <div class="pill" onclick="selectPill(this,'cat')" data-value="Salud / Cuidado Personal">💊 Salud</div>
-        </div>
+        <select id="reg-cat" onchange="selectedCat=this.value;verificarPresupuestoAlRegistrar(this.value)" style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:15px;padding:12px;width:100%;outline:none;">
+          <option value="">Selecciona categoría...</option>
+        </select>
       </div>
       <div class="form-field">
         <label>Método de pago</label>
-        <div class="pill-group" id="met-pills">
-          <div class="pill" onclick="selectPill(this,'met')" data-value="Diners">💳 Diners</div>
-          <div class="pill" onclick="selectPill(this,'met')" data-value="Visa Signature">💳 Visa</div>
-          <div class="pill" onclick="selectPill(this,'met')" data-value="Titanium Euphoria">💳 Titanium</div>
-          <div class="pill" onclick="selectPill(this,'met')" data-value="DeUna!">📱 DeUna!</div>
-          <div class="pill" onclick="selectPill(this,'met')" data-value="Transfer BP">🏦 Transfer BP</div>
-        </div>
+        <select id="reg-met" onchange="selectedMet=this.value" style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:15px;padding:12px;width:100%;outline:none;">
+          <option value="">Selecciona método...</option>
+        </select>
       </div>
     </div>
 
@@ -662,6 +694,11 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
   <!-- ── HISTORIAL ── -->
   <div class="page" id="page-historial">
+    <div class="hist-search-wrap">
+      <span class="hist-search-icon">🔍</span>
+      <input class="hist-search-input" type="text" id="hist-search" placeholder="Buscar por descripción, categoría o método..." oninput="buscarHistorial(this.value)" />
+      <button class="hist-search-clear" id="hist-search-clear" onclick="limpiarBusqueda()">✕</button>
+    </div>
     <div class="hist-filter-wrap">
       <button class="hist-filter-btn active" onclick="setFiltroHist('todos')">Todos</button>
       <button class="hist-filter-btn" onclick="setFiltroHist('Transporte')">🚗</button>
@@ -725,16 +762,7 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
           <div class="analisis-text"><strong>Diferidos</strong><span>Cuotas activas y progreso</span></div>
           <span class="analisis-arrow">›</span>
         </div>
-        <div class="analisis-item" onclick="mostrarSubPage('configuracion')">
-          <span class="analisis-icon">⚙️</span>
-          <div class="analisis-text"><strong>Configuración</strong><span>Umbral, presupuestos y ajustes</span></div>
-          <span class="analisis-arrow">›</span>
-        </div>
-        <div class="analisis-item" onclick="mostrarSubPage('cats-mets')">
-          <span class="analisis-icon">🏷️</span>
-          <div class="analisis-text"><strong>Categorías y medios de pago</strong><span>Agregar, editar o eliminar</span></div>
-          <span class="analisis-arrow">›</span>
-        </div>
+
       </div>
     </div>
 
@@ -1168,14 +1196,31 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
 <!-- ── AJUSTES ── -->
 <div class="page" id="page-ajustes">
+  <!-- App info -->
   <div style="background:var(--card);border:1px solid var(--card-brd);border-radius:16px;padding:20px;margin-bottom:14px;text-align:center;">
     <div style="font-size:32px;margin-bottom:8px;">🪙</div>
     <div style="font-size:18px;font-weight:700;color:var(--text);">Otto y 10 lucas</div>
     <div style="font-size:12px;color:var(--muted);margin-top:4px;">Plan Full</div>
   </div>
 
-  <div style="background:var(--card);border:1px solid var(--card-brd);border-radius:12px;padding:16px;margin-bottom:12px;">
-    <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Script conectado</div>
+  <!-- Nombre de la app -->
+  <div class="ajuste-config-section">
+    <div class="ajuste-config-title">Nombre de la app</div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+      <input type="text" id="cfg-app-titulo" placeholder="Otto y 10 lucas" style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:10px;flex:1;outline:none;" />
+      <button onclick="guardarTituloApp()" style="background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px 14px;cursor:pointer;">OK</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <label style="color:var(--text-sub);font-size:12px;flex:1;">Ocultar texto del título (dejar solo el ícono 🪙)</label>
+      <div id="toggle-titulo" onclick="toggleTituloVisible()" style="width:44px;height:24px;border-radius:12px;background:var(--card-brd);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;">
+        <div id="toggle-titulo-knob" style="position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--muted);transition:left .2s;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script conectado -->
+  <div class="ajuste-config-section">
+    <div class="ajuste-config-title">Script conectado</div>
     <div id="ajustes-url-display" style="color:var(--text-sub);font-size:11px;word-break:break-all;background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;padding:10px;margin-bottom:10px;font-family:monospace;"></div>
     <button onclick="mostrarCambiarUrl()" style="width:100%;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;">Cambiar URL</button>
     <div id="cambiar-url-form" style="display:none;margin-top:10px;">
@@ -1187,25 +1232,82 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
     </div>
   </div>
 
-  <div style="background:var(--card);border:1px solid var(--card-brd);border-radius:12px;padding:16px;margin-bottom:12px;">
-    <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Tema</div>
+  <!-- Tema -->
+  <div class="ajuste-config-section">
+    <div class="ajuste-config-title">Tema</div>
     <div class="theme-picker">
-      <div style="text-align:center;">
-        <div class="theme-dot theme-dot-forest active" id="dot-forest" onclick="setTema('forest')"></div>
-        <div style="color:var(--muted);font-size:9px;margin-top:5px;">Forest</div>
+      <div style="text-align:center;"><div class="theme-dot theme-dot-forest active" id="dot-forest" onclick="setTema('forest')"></div><div style="color:var(--muted);font-size:9px;margin-top:5px;">Forest</div></div>
+      <div style="text-align:center;"><div class="theme-dot theme-dot-obsidian" id="dot-obsidian" onclick="setTema('obsidian')"></div><div style="color:var(--muted);font-size:9px;margin-top:5px;">Gold</div></div>
+      <div style="text-align:center;"><div class="theme-dot theme-dot-arctic" id="dot-arctic" onclick="setTema('arctic')"></div><div style="color:var(--muted);font-size:9px;margin-top:5px;">Arctic</div></div>
+      <div style="text-align:center;"><div class="theme-dot theme-dot-sakura" id="dot-sakura" onclick="setTema('sakura')"></div><div style="color:var(--muted);font-size:9px;margin-top:5px;">Sakura</div></div>
+    </div>
+  </div>
+
+  <!-- Umbral diferidos -->
+  <div class="ajuste-config-section">
+    <div class="ajuste-config-title">Umbral de diferidos</div>
+    <p style="color:var(--text-sub);font-size:12px;margin-bottom:10px;line-height:1.5;">Gastos de tarjeta de crédito iguales o mayores a este monto quedan en "revisar" para que decidas si son diferidos.</p>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="color:var(--muted);font-size:13px;">$</span>
+      <input class="umbral-input" type="number" id="umbral-input" min="0" max="9999" step="10" value="80" style="flex:1;" />
+      <button class="umbral-save" onclick="guardarUmbral()">Guardar</button>
+    </div>
+  </div>
+
+  <!-- Presupuestos -->
+  <div class="ajuste-config-section">
+    <div class="ajuste-config-title">Presupuestos por categoría</div>
+    <p style="color:var(--text-sub);font-size:12px;margin-bottom:12px;line-height:1.5;">Define un límite mensual para cada categoría. La app te avisa cuando te acercas o lo superas.</p>
+    <div id="config-pres-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
+    <div style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:10px;padding:12px;margin-top:10px;">
+      <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Agregar / editar límite</div>
+      <select id="config-pres-cat" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:8px;"><option value="">Categoría...</option></select>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input id="config-pres-limite" type="number" placeholder="Límite $" min="0" step="5" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--accent);font-size:15px;font-weight:700;padding:9px 10px;flex:1;outline:none;" />
+        <input id="config-pres-icono" type="text" placeholder="📌" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px 10px;width:52px;outline:none;text-align:center;" />
       </div>
-      <div style="text-align:center;">
-        <div class="theme-dot theme-dot-obsidian" id="dot-obsidian" onclick="setTema('obsidian')"></div>
-        <div style="color:var(--muted);font-size:9px;margin-top:5px;">Gold</div>
+      <button onclick="guardarPresupuestoConfig()" style="width:100%;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;">Guardar límite</button>
+    </div>
+  </div>
+
+  <!-- Categorías -->
+  <div class="ajuste-config-section">
+    <div class="ajuste-config-title">Categorías de gasto</div>
+    <div class="undo-banner" id="undo-cat-banner">
+      <span id="undo-cat-msg"></span>
+      <button class="undo-btn" onclick="undoEliminarCategoria()">↩ Deshacer</button>
+    </div>
+    <div id="config-cats-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
+    <div style="display:flex;gap:8px;margin-top:10px;">
+      <input id="nueva-cat-icono" type="text" placeholder="📌" style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px;width:48px;outline:none;text-align:center;" />
+      <input id="nueva-cat-nombre" type="text" placeholder="Nombre de la categoría..." style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;flex:1;outline:none;" />
+      <button onclick="agregarCategoria()" style="background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:9px 12px;cursor:pointer;">+</button>
+    </div>
+  </div>
+
+  <!-- Métodos de pago -->
+  <div class="ajuste-config-section">
+    <div class="ajuste-config-title">Métodos de pago</div>
+    <div class="undo-banner" id="undo-met-banner">
+      <span id="undo-met-msg"></span>
+      <button class="undo-btn" onclick="undoEliminarMetodo()">↩ Deshacer</button>
+    </div>
+    <div id="config-mets-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
+    <div style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:10px;padding:12px;margin-top:10px;">
+      <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Nuevo método</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px;">
+        <input id="nuevo-met-icono" type="text" placeholder="💳" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px;width:48px;outline:none;text-align:center;" />
+        <input id="nuevo-met-nombre" type="text" placeholder="Nombre del método..." style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;flex:1;outline:none;" />
       </div>
-      <div style="text-align:center;">
-        <div class="theme-dot theme-dot-arctic" id="dot-arctic" onclick="setTema('arctic')"></div>
-        <div style="color:var(--muted);font-size:9px;margin-top:5px;">Arctic</div>
+      <select id="nuevo-met-tipo" onchange="toggleCorteNuevo(this.value)" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:8px;">
+        <option value="debito">Débito / Efectivo</option>
+        <option value="credito">Tarjeta de crédito</option>
+      </select>
+      <div id="nuevo-met-corte-wrap" class="met-corte-field">
+        <input id="nuevo-met-corte" type="number" placeholder="Día de corte (ej: 14)" min="1" max="31" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--warn);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:4px;" />
+        <p style="color:var(--muted);font-size:11px;line-height:1.4;">El corte define hasta qué día van los gastos al estado de cuenta de este mes. Ej: corte 14 → gastos del 15 al 14 del mes siguiente se cobran juntos.</p>
       </div>
-      <div style="text-align:center;">
-        <div class="theme-dot theme-dot-sakura" id="dot-sakura" onclick="setTema('sakura')"></div>
-        <div style="color:var(--muted);font-size:9px;margin-top:5px;">Sakura</div>
-      </div>
+      <button onclick="agregarMetodo()" style="width:100%;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;margin-top:8px;">+ Agregar método</button>
     </div>
   </div>
 
@@ -1215,12 +1317,21 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 <div class="cola-badge" id="cola-badge" onclick="reintentarCola()"></div>
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 // ── FASE 5: Arrays dinámicos — se llenan desde get_config al init ──
 let CATS = ["Transporte","Comida","Trámites","Estado cuenta","Tienda","Ocio","Family","Arriendo","Necesidad","Herramienta","Vestimenta","Salud / Cuidado Personal"]; // fallback hasta que cargue config
 let METS = ["Diners","Visa Signature","Titanium Euphoria","DeUna!","Transfer BP"]; // fallback
 let CONFIG_CATS = []; // [{nombre, icono}]
 let CONFIG_METS = []; // [{nombre, icono, tipo, diaCobro}]
+
+// ── Helpers globales ──────────────────────────────────────
+function r(v) { return Math.round(v * 100) / 100; }
+function fn_esc(s) { return String(s||'').replace(/'/g,"&#39;").replace(/"/g,"&quot;"); }
+
+// ── Estado de Undo ────────────────────────────────────────
+let undoCat = null; // {nombre, icono, ts}
+let undoMet = null; // {nombre, icono, tipo, diaCobro, ts}
 const MESES_LABEL = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 
 let scriptUrl = localStorage.getItem('otto_script_url') || '';
@@ -1290,6 +1401,9 @@ function iniciarApp() {
     const a2 = document.getElementById('comp-anio2');
     if (a2) a2.value = anioSeleccionado - 1;
   }
+  // Aplicar título guardado
+  _aplicarTituloGuardado();
+
   // ── Fase 5: cargar config dinámica antes de poblar la UI ──
   initConfig().then(() => {
     poblarUIConConfig();
@@ -1314,7 +1428,7 @@ function switchTab(tab) {
   if (tab === 'historial') cargarHistorial();
   if (tab === 'analisis') volverAnalisis();
   if (tab === 'cobrar') cargarCobrar();
-  if (tab === 'ajustes') cargarAjustes();
+  if (tab === 'ajustes') cargarAjustesCompleto();
 }
 
 function onMesChange() {
@@ -1394,21 +1508,19 @@ function poblarUIConConfig() {
 }
 
 function _poblarPills() {
-  const catWrap = document.getElementById('cat-pills');
-  const metWrap = document.getElementById('met-pills');
-  if (catWrap) {
-    catWrap.innerHTML = CATS.map(c => {
-      const cfg = CONFIG_CATS.find(x => x.nombre === c);
-      const icono = cfg ? cfg.icono : '📌';
-      return `<div class="pill" onclick="selectPill(this,'cat')" data-value="${c}">${icono} ${c}</div>`;
-    }).join('');
+  // Poblar select de categoría en registro
+  const catSel = document.getElementById('reg-cat');
+  if (catSel) {
+    catSel.innerHTML = '<option value="">Selecciona categoría...</option>' +
+      CONFIG_CATS.map(c => `<option value="${fn_esc(c.nombre)}">${c.icono} ${c.nombre}</option>`).join('');
+    if (selectedCat) catSel.value = selectedCat;
   }
-  if (metWrap) {
-    metWrap.innerHTML = METS.map(m => {
-      const cfg = CONFIG_METS.find(x => x.nombre === m);
-      const icono = cfg ? cfg.icono : '💳';
-      return `<div class="pill" onclick="selectPill(this,'met')" data-value="${m}">${icono} ${m}</div>`;
-    }).join('');
+  // Poblar select de método en registro
+  const metSel = document.getElementById('reg-met');
+  if (metSel) {
+    metSel.innerHTML = '<option value="">Selecciona método...</option>' +
+      CONFIG_METS.map(m => `<option value="${fn_esc(m.nombre)}">${m.icono} ${m.nombre}</option>`).join('');
+    if (selectedMet) metSel.value = selectedMet;
   }
 }
 
@@ -1478,10 +1590,45 @@ function _poblarBotonesTarjeta() {
   grid.innerHTML = METS.map(m => {
     const cfg = CONFIG_METS.find(x => x.nombre === m);
     const icono = cfg ? cfg.icono : '💳';
-    return `<button class="btn amber" onclick="abrirSheet('detalle ${m.toLowerCase()}','${m}')">
+    return `<button class="btn amber" onclick="abrirSheetFn(()=>detalleCatMet('${fn_esc(cfg.nombre)}'))">
       <span class="icon">${icono}</span>${m}
     </button>`;
   }).join('');
+}
+
+
+async function detalleCatMet(metodo) {
+  const titleEl = document.getElementById('sheet-title');
+  const bodyEl  = document.getElementById('sheet-body');
+  titleEl.textContent = metodo;
+  const met = CONFIG_METS.find(m => m.nombre === metodo);
+  try {
+    const data = await fetch(urlConMes('historial'), { redirect: 'follow' }).then(res => res.json());
+    let items = data.filter(x => x.metodo === metodo && x.tipo !== 'ingreso');
+    if (met?.tipo === 'credito' && met.diaCobro) {
+      const anio = anioSeleccionado, mes = mesSeleccionado - 1;
+      const desde = new Date(anio, mes - 1, met.diaCobro + 1);
+      const hasta  = new Date(anio, mes, met.diaCobro);
+      items = data.filter(x => {
+        if (x.metodo !== metodo || x.tipo === 'ingreso') return false;
+        const p = x.fecha.split('/');
+        const d = new Date(anio, parseInt(p[1])-1, parseInt(p[0]));
+        return d >= desde && d <= hasta;
+      });
+    }
+    if (!items.length) { bodyEl.innerHTML = `<span style="color:var(--muted);font-size:13px;">Sin gastos con ${metodo} este período.</span>`; return; }
+    const total = items.reduce((s, x) => s + parseFloat(x.monto), 0);
+    bodyEl.innerHTML = items.map(x =>
+      `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--card-brd);font-size:13px;">
+        <div><div style="color:var(--text);">${x.descripcion}</div><div style="color:var(--muted);font-size:11px;">${x.fecha} · ${x.categoria}</div></div>
+        <span style="color:var(--expense);font-weight:600;">$${x.monto}</span>
+      </div>`
+    ).join('') +
+    `<div style="display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--card-brd);">
+      <span style="color:var(--muted);font-size:11px;text-transform:uppercase;">Total</span>
+      <span style="color:var(--text);font-size:15px;font-weight:700;">$${r(total).toFixed(2)}</span>
+    </div>`;
+  } catch { bodyEl.innerHTML = '<span class="error">Error al cargar.</span>'; }
 }
 
 // ── Función setFiltroHist actualizada para lista dinámica ──
@@ -1515,37 +1662,34 @@ async function cargarConfigCatsMets() {
 function _renderListaCats() {
   const lista = document.getElementById('config-cats-lista');
   if (!lista) return;
-  if (!CONFIG_CATS.length) {
-    lista.innerHTML = '<p style="color:#555;font-size:12px;">Sin categorías configuradas.</p>'; return;
-  }
-  lista.innerHTML = CONFIG_CATS.map(c => `
-    <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:9px 12px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
-      <span style="font-size:13px;color:#e0e0e0;">${c.icono} ${c.nombre}</span>
-      <button onclick="eliminarCategoria('${c.nombre.replace(/'/g,"\'")}', this)"
-        style="background:#2a1a1a;border:1px solid #5a2a2a;border-radius:6px;color:#e24b4a;font-size:11px;padding:4px 8px;cursor:pointer;">🗑</button>
+  if (!CONFIG_CATS.length) { lista.innerHTML = '<p style="color:var(--muted);font-size:12px;">Sin categorías. Agrega la primera abajo.</p>'; return; }
+  lista.innerHTML = CONFIG_CATS.map(cat => `
+    <div class="config-item-row">
+      <div class="config-item-info">
+        <div class="config-item-nombre">${cat.icono} ${cat.nombre}</div>
+      </div>
+      <div class="config-item-btns">
+        <button class="config-del-btn" onclick="pedirEliminarCategoria('${fn_esc(cat.nombre)}',this)">🗑</button>
+      </div>
     </div>`).join('');
 }
 
 function _renderListaMets() {
   const lista = document.getElementById('config-mets-lista');
   if (!lista) return;
-  if (!CONFIG_METS.length) {
-    lista.innerHTML = '<p style="color:#555;font-size:12px;">Sin métodos configurados.</p>'; return;
-  }
+  if (!CONFIG_METS.length) { lista.innerHTML = '<p style="color:var(--muted);font-size:12px;">Sin métodos. Agrega el primero abajo.</p>'; return; }
   lista.innerHTML = CONFIG_METS.map(m => {
-    const tipoBadge = m.tipo === 'credito'
-      ? `<span style="color:#e8a838;font-size:10px;">crédito · corte día ${m.diaCobro}</span>`
-      : `<span style="color:#7fb4d4;font-size:10px;">${m.tipo}</span>`;
-    return `<div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:9px 12px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;">
-      <div style="flex:1;">
-        <div style="font-size:13px;color:#e0e0e0;">${m.icono} ${m.nombre}</div>
-        <div style="margin-top:2px;">${tipoBadge}</div>
+    const sub = m.tipo === 'credito'
+      ? `Crédito · corte día ${m.diaCobro}`
+      : `Débito / Efectivo`;
+    return `<div class="config-item-row">
+      <div class="config-item-info">
+        <div class="config-item-nombre">${m.icono} ${m.nombre}</div>
+        <div class="config-item-sub">${sub}</div>
       </div>
-      <div style="display:flex;gap:6px;">
-        <button onclick="abrirEditarMetodo(${JSON.stringify(m).replace(/"/g,'&quot;')})"
-          style="background:#1a2a3a;border:1px solid #2a4a5a;border-radius:6px;color:#7fb4d4;font-size:11px;padding:4px 8px;cursor:pointer;">✏️</button>
-        <button onclick="eliminarMetodo('${m.nombre.replace(/'/g,"\'")}', this)"
-          style="background:#2a1a1a;border:1px solid #5a2a2a;border-radius:6px;color:#e24b4a;font-size:11px;padding:4px 8px;cursor:pointer;">🗑</button>
+      <div class="config-item-btns">
+        <button style="background:#1a2a3a;border:1px solid #2a4a5a;border-radius:6px;color:var(--income);font-size:11px;padding:4px 8px;cursor:pointer;" onclick="abrirEditarMetodo(${JSON.stringify(m).replace(/"/g,'&quot;')})">✏️</button>
+        <button class="config-del-btn" onclick="pedirEliminarMetodo('${fn_esc(m.nombre)}',this)">🗑</button>
       </div>
     </div>`;
   }).join('');
@@ -1553,8 +1697,12 @@ function _renderListaMets() {
 
 async function agregarCategoria() {
   const nombre = document.getElementById('nueva-cat-nombre')?.value.trim();
-  const icono  = document.getElementById('nueva-cat-icono')?.value.trim()  || '📌';
+  const icono  = document.getElementById('nueva-cat-icono')?.value.trim() || '📌';
   if (!nombre) { mostrarToast('Escribe el nombre de la categoría'); return; }
+  // Validación duplicado local antes de ir al servidor
+  if (CONFIG_CATS.some(c => c.nombre.toLowerCase() === nombre.toLowerCase())) {
+    mostrarToast('⚠️ Ya existe una categoría con ese nombre'); return;
+  }
   try {
     const params = new URLSearchParams({ cmd: 'add_categoria', nombre, icono });
     const res = await fetch(scriptUrl + '?' + params, { redirect: 'follow' });
@@ -1563,40 +1711,72 @@ async function agregarCategoria() {
       mostrarToast('✅ Categoría agregada');
       document.getElementById('nueva-cat-nombre').value = '';
       document.getElementById('nueva-cat-icono').value = '';
-      await initConfig();
-      _renderListaCats();
-      poblarUIConConfig();
-    } else {
-      mostrarToast('⚠️ ' + (data.error || 'Error'));
-    }
+      await initConfig(); _renderListaCats(); poblarUIConConfig();
+    } else { mostrarToast('⚠️ ' + (data.error || 'Error')); }
   } catch(e) { mostrarToast('Error al guardar'); }
 }
 
+function pedirEliminarCategoria(nombre, btn) {
+  if (!confirm('¿Eliminar la categoría "' + nombre + '"?
+Los gastos ya registrados conservarán esta categoría.')) return;
+  eliminarCategoria(nombre, btn);
+}
+
 async function eliminarCategoria(nombre, btn) {
-  if (!confirm('¿Eliminar la categoría "' + nombre + '"? Los gastos ya registrados conservarán esta categoría.')) return;
-  btn.textContent = '...'; btn.disabled = true;
+  if (btn) { btn.textContent = '...'; btn.disabled = true; }
+  // Guardar para undo (1 semana)
+  const cfg = CONFIG_CATS.find(c => c.nombre === nombre);
+  undoCat = { nombre, icono: cfg?.icono || '📌', ts: Date.now() };
+  localStorage.setItem('otto_undo_cat', JSON.stringify(undoCat));
   try {
     const res = await fetch(scriptUrl + '?cmd=del_categoria&nombre=' + encodeURIComponent(nombre), { redirect: 'follow' });
     const data = await res.json();
     if (data.ok) {
-      mostrarToast('✅ Categoría eliminada');
       await initConfig();
       _renderListaCats();
       poblarUIConConfig();
+      // Mostrar banner undo
+      const banner = document.getElementById('undo-cat-banner');
+      const msg = document.getElementById('undo-cat-msg');
+      if (banner && msg) { msg.textContent = '🗑 "' + nombre + '" eliminada'; banner.classList.add('visible'); }
+      mostrarToast('✅ Categoría eliminada');
     } else {
       mostrarToast('⚠️ ' + (data.error || 'Error'));
-      btn.textContent = '🗑'; btn.disabled = false;
+      if (btn) { btn.textContent = '🗑'; btn.disabled = false; }
+      undoCat = null;
     }
-  } catch(e) { mostrarToast('Error'); btn.textContent = '🗑'; btn.disabled = false; }
+  } catch(e) { mostrarToast('Error'); if (btn) { btn.textContent = '🗑'; btn.disabled = false; } undoCat = null; }
+}
+
+async function undoEliminarCategoria() {
+  const saved = undoCat || JSON.parse(localStorage.getItem('otto_undo_cat') || 'null');
+  if (!saved) { mostrarToast('Sin acción para deshacer'); return; }
+  const semana = 7 * 24 * 60 * 60 * 1000;
+  if (Date.now() - saved.ts > semana) { mostrarToast('El tiempo para deshacer expiró (1 semana)'); return; }
+  try {
+    const params = new URLSearchParams({ cmd: 'add_categoria', nombre: saved.nombre, icono: saved.icono });
+    const res = await fetch(scriptUrl + '?' + params, { redirect: 'follow' });
+    const data = await res.json();
+    if (data.ok) {
+      mostrarToast('↩ "' + saved.nombre + '" restaurada');
+      undoCat = null; localStorage.removeItem('otto_undo_cat');
+      document.getElementById('undo-cat-banner')?.classList.remove('visible');
+      await initConfig(); _renderListaCats(); poblarUIConConfig();
+    } else { mostrarToast('⚠️ ' + (data.error || 'Error al restaurar')); }
+  } catch { mostrarToast('Error al restaurar'); }
 }
 
 async function agregarMetodo() {
   const nombre   = document.getElementById('nuevo-met-nombre')?.value.trim();
-  const icono    = document.getElementById('nuevo-met-icono')?.value.trim()    || '💳';
-  const tipo     = document.getElementById('nuevo-met-tipo')?.value            || 'debito';
+  const icono    = document.getElementById('nuevo-met-icono')?.value.trim() || '💳';
+  const tipo     = document.getElementById('nuevo-met-tipo')?.value || 'debito';
   const diaCobro = parseInt(document.getElementById('nuevo-met-corte')?.value) || 0;
   if (!nombre) { mostrarToast('Escribe el nombre del método'); return; }
   if (tipo === 'credito' && !diaCobro) { mostrarToast('Ingresa el día de corte para tarjeta de crédito'); return; }
+  // Validación duplicado local
+  if (CONFIG_METS.some(m => m.nombre.toLowerCase() === nombre.toLowerCase())) {
+    mostrarToast('⚠️ Ya existe un método con ese nombre'); return;
+  }
   try {
     const params = new URLSearchParams({ cmd: 'add_metodo', nombre, icono, tipo, diaCobro });
     const res = await fetch(scriptUrl + '?' + params, { redirect: 'follow' });
@@ -1606,12 +1786,10 @@ async function agregarMetodo() {
       ['nuevo-met-nombre','nuevo-met-icono','nuevo-met-corte'].forEach(id => {
         const el = document.getElementById(id); if (el) el.value = '';
       });
-      await initConfig();
-      _renderListaMets();
-      poblarUIConConfig();
-    } else {
-      mostrarToast('⚠️ ' + (data.error || 'Error'));
-    }
+      document.getElementById('nuevo-met-tipo').value = 'debito';
+      toggleCorteNuevo('debito');
+      await initConfig(); _renderListaMets(); poblarUIConConfig();
+    } else { mostrarToast('⚠️ ' + (data.error || 'Error')); }
   } catch(e) { mostrarToast('Error al guardar'); }
 }
 
@@ -1649,22 +1827,50 @@ async function guardarEditarMetodo() {
   } catch(e) { mostrarToast('Error al guardar'); }
 }
 
+function pedirEliminarMetodo(nombre, btn) {
+  if (!confirm('¿Eliminar el método "' + nombre + '"?
+Los gastos ya registrados conservarán este método.')) return;
+  eliminarMetodo(nombre, btn);
+}
+
 async function eliminarMetodo(nombre, btn) {
-  if (!confirm('¿Eliminar el método "' + nombre + '"? Los gastos ya registrados conservarán este método.')) return;
-  btn.textContent = '...'; btn.disabled = true;
+  if (btn) { btn.textContent = '...'; btn.disabled = true; }
+  const cfg = CONFIG_METS.find(m => m.nombre === nombre);
+  undoMet = { nombre, icono: cfg?.icono || '💳', tipo: cfg?.tipo || 'debito', diaCobro: cfg?.diaCobro || 0, ts: Date.now() };
+  localStorage.setItem('otto_undo_met', JSON.stringify(undoMet));
   try {
     const res = await fetch(scriptUrl + '?cmd=del_metodo&nombre=' + encodeURIComponent(nombre), { redirect: 'follow' });
     const data = await res.json();
     if (data.ok) {
+      await initConfig(); _renderListaMets(); poblarUIConConfig();
+      const banner = document.getElementById('undo-met-banner');
+      const msg = document.getElementById('undo-met-msg');
+      if (banner && msg) { msg.textContent = '🗑 "' + nombre + '" eliminado'; banner.classList.add('visible'); }
       mostrarToast('✅ Método eliminado');
-      await initConfig();
-      _renderListaMets();
-      poblarUIConConfig();
     } else {
       mostrarToast('⚠️ ' + (data.error || 'Error'));
-      btn.textContent = '🗑'; btn.disabled = false;
+      if (btn) { btn.textContent = '🗑'; btn.disabled = false; }
+      undoMet = null;
     }
-  } catch(e) { mostrarToast('Error'); btn.textContent = '🗑'; btn.disabled = false; }
+  } catch(e) { mostrarToast('Error'); if (btn) { btn.textContent = '🗑'; btn.disabled = false; } undoMet = null; }
+}
+
+async function undoEliminarMetodo() {
+  const saved = undoMet || JSON.parse(localStorage.getItem('otto_undo_met') || 'null');
+  if (!saved) { mostrarToast('Sin acción para deshacer'); return; }
+  const semana = 7 * 24 * 60 * 60 * 1000;
+  if (Date.now() - saved.ts > semana) { mostrarToast('El tiempo para deshacer expiró (1 semana)'); return; }
+  try {
+    const params = new URLSearchParams({ cmd: 'add_metodo', nombre: saved.nombre, icono: saved.icono, tipo: saved.tipo, diaCobro: saved.diaCobro });
+    const res = await fetch(scriptUrl + '?' + params, { redirect: 'follow' });
+    const data = await res.json();
+    if (data.ok) {
+      mostrarToast('↩ "' + saved.nombre + '" restaurado');
+      undoMet = null; localStorage.removeItem('otto_undo_met');
+      document.getElementById('undo-met-banner')?.classList.remove('visible');
+      await initConfig(); _renderListaMets(); poblarUIConConfig();
+    } else { mostrarToast('⚠️ ' + (data.error || 'Error al restaurar')); }
+  } catch { mostrarToast('Error al restaurar'); }
 }
 
 function toggleCorteNuevo(tipo) {
@@ -1708,8 +1914,11 @@ async function cargarHome() {
       } catch { huboError = true; }
     } else { huboError = true; }
 
-    // chart — seguimos cargando para gráficos; no lo usamos para el banner
-    // (se cargará solo cuando se abra la sub-página Gráficos)
+    // Cargar chart en background para tener gastos por categoría en botones del home
+    fetch(urlConMes('chart'), { redirect: 'follow' })
+      .then(r => r.json())
+      .then(data => { guardarCache('chart', data); _poblarBotonesHome(); })
+      .catch(() => {});
 
     // hoy
     if (hoyR.status === 'fulfilled') {
@@ -2222,6 +2431,30 @@ function setFiltroHist(filtro) {
   aplicarFiltroHist();
 }
 
+function buscarHistorial(texto) {
+  const clear = document.getElementById('hist-search-clear');
+  if (clear) clear.classList.toggle('visible', texto.length > 0);
+  const q = texto.toLowerCase().trim();
+  document.querySelectorAll('.historial-item').forEach(el => {
+    const cat    = (el.dataset.categoria || '').toLowerCase();
+    const metodo = (el.dataset.metodo || '').toLowerCase();
+    const desc   = el.querySelector('.historial-desc')?.textContent.toLowerCase() || '';
+    const matchFiltro = filtroActivo === 'todos' ||
+      (el.dataset.categoria || '') === filtroActivo ||
+      (el.dataset.metodo || '') === filtroActivo;
+    const matchBusq = !q || desc.includes(q) || cat.includes(q) || metodo.includes(q);
+    el.style.display = (matchFiltro && matchBusq) ? 'block' : 'none';
+  });
+}
+
+function limpiarBusqueda() {
+  const inp = document.getElementById('hist-search');
+  if (inp) inp.value = '';
+  const clear = document.getElementById('hist-search-clear');
+  if (clear) clear.classList.remove('visible');
+  aplicarFiltroHist();
+}
+
 function aplicarFiltroHist() {
   const totalEl = document.getElementById('hist-filter-total');
   const labelEl = document.getElementById('hist-filter-label');
@@ -2308,10 +2541,10 @@ function repetirGasto(fila) {
   setFechaRapida(0);
   document.getElementById('reg-monto').value = r.monto;
   document.getElementById('reg-desc').value = r.descripcion;
-  document.querySelectorAll('#cat-pills .pill').forEach(p => p.classList.toggle('selected', p.dataset.value === r.categoria));
   selectedCat = r.categoria;
-  document.querySelectorAll('#met-pills .pill').forEach(p => p.classList.toggle('selected', p.dataset.value === (r.metodo||'')));
   selectedMet = r.metodo || '';
+  const catSel = document.getElementById('reg-cat'); if (catSel) catSel.value = r.categoria;
+  const metSel = document.getElementById('reg-met'); if (metSel) metSel.value = r.metodo || '';
   // Asegurarse de que es modo gasto
   setTipoReg('gasto');
   mostrarToast('🔁 ' + r.descripcion);
@@ -2359,7 +2592,10 @@ async function cargarGrafico() {
     const data = await res.json();
     guardarCache('chart', data);
     renderGrafico(data, false, null);
-  } catch(e) { if (!cached) legend.innerHTML = '<span class="error">Sin conexión.</span>'; }
+    mostrarOfflineBanner(false);
+  } catch(e) {
+    if (!cached) legend.innerHTML = '<span class="error">Error al cargar. Verifica la conexión.</span>';
+  }
 }
 
 // ── PRESUPUESTOS ──────────────────────────────────────────
@@ -2600,9 +2836,7 @@ async function cargarProyeccion() {
 
 // ── REGISTRAR ─────────────────────────────────────────────
 function selectPill(el, type) {
-  const group = type === 'cat' ? 'cat-pills' : 'met-pills';
-  document.querySelectorAll('#' + group + ' .pill').forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
+  // Mantenido por compatibilidad con modales que aún usen pills
   if (type === 'cat') { selectedCat = el.dataset.value; verificarPresupuestoAlRegistrar(selectedCat); }
   else selectedMet = el.dataset.value;
 }
@@ -2628,6 +2862,11 @@ async function registrar() {
 
   let params;
   if (tipoReg === 'gasto') {
+    // Leer de selects (nueva UI)
+    const catSelEl = document.getElementById('reg-cat');
+    const metSelEl = document.getElementById('reg-met');
+    if (catSelEl) selectedCat = catSelEl.value;
+    if (metSelEl) selectedMet = metSelEl.value;
     if (!fecha || !monto || !selectedCat || !selectedMet || !desc) { mostrarToast('Completa todos los campos'); return; }
     params = new URLSearchParams({ cmd: 'registrar', fecha, monto, categoria: selectedCat, metodo: selectedMet, descripcion: desc });
   } else {
@@ -2657,7 +2896,10 @@ async function registrar() {
 function limpiarFormRegistrar() {
   document.getElementById('reg-monto').value = '';
   document.getElementById('reg-desc').value = '';
-  document.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  const catSel = document.getElementById('reg-cat');
+  const metSel = document.getElementById('reg-met');
+  if (catSel) catSel.value = '';
+  if (metSel) metSel.value = '';
   selectedCat = ''; selectedMet = '';
   document.getElementById('reg-pres-aviso').classList.remove('visible');
   if (document.getElementById('reg-fuente')) document.getElementById('reg-fuente').value = '';
@@ -2743,8 +2985,20 @@ async function eliminar(fila) {
 
 // ── IR AL SHEETS ──────────────────────────────────────────
 function irAlSheets() {
-  if (!sheetsUrl) { mostrarToast('URL del Sheets no disponible aún'); return; }
-  if (confirm('¿Abrir Google Sheets?')) window.open(sheetsUrl, '_blank');
+  if (!sheetsUrl) {
+    // Intentar cargar la URL si no está disponible aún
+    fetch(scriptUrl + '?cmd=info', { redirect: 'follow' })
+      .then(r => r.json())
+      .then(d => {
+        if (d.sheets_url) {
+          sheetsUrl = d.sheets_url;
+          localStorage.setItem('otto_sheets_url', sheetsUrl);
+          window.open(sheetsUrl, '_blank');
+        } else { mostrarToast('URL del Sheets no disponible'); }
+      }).catch(() => mostrarToast('Sin conexión'));
+    return;
+  }
+  window.open(sheetsUrl, '_blank');
 }
 
 // ── CACHÉ ─────────────────────────────────────────────────
@@ -3267,29 +3521,32 @@ async function cargarPresupuestosConfig() {
     lista.innerHTML = CATS.map(cat => {
       const p = mapaDefinidos[cat];
       if (p) {
-        // Categoría con límite definido
-        const pctColor = p.pct >= 100 ? '#e24b4a' : p.pct >= 80 ? '#e8a838' : '#7fd4a0';
-        return `
-          <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:10px;padding:10px 14px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
-            <div style="flex:1;">
-              <span style="font-size:13px;color:#e0e0e0;">${p.icono} ${p.categoria}</span>
-              <span style="font-size:11px;color:${pctColor};margin-left:6px;">${p.pct}% · $${p.gastado}/$${p.limite}</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <button onclick="editarPresupuestoConfig('${p.categoria}','${p.icono}',${p.limite})" style="background:#1a2a3a;border:1px solid #2a4a5a;border-radius:6px;color:#7fb4d4;font-size:11px;padding:4px 8px;cursor:pointer;">✏️</button>
-              <button onclick="eliminarPresupuestoConfig('${p.categoria}', this)" style="background:#2a1a1a;border:1px solid #5a2a2a;border-radius:6px;color:#e24b4a;font-size:11px;padding:4px 8px;cursor:pointer;">🗑</button>
-            </div>
-          </div>`;
+        const cc = p.pct >= 100 ? 'danger' : p.pct >= 80 ? 'warn' : 'ok';
+        const colPct = p.pct >= 100 ? 'var(--danger)' : p.pct >= 80 ? 'var(--warn)' : 'var(--accent)';
+        const resto = (p.limite - p.gastado).toFixed(2);
+        return `<div class="pres-config-row">
+          <div class="pres-config-header">
+            <span class="pres-config-nombre">${p.icono} ${p.categoria}</span>
+            <span class="pres-config-monto">Límite: $${p.limite}</span>
+          </div>
+          <div class="pres-track"><div class="pres-fill ${cc}" style="width:${Math.min(p.pct,100)}%"></div></div>
+          <div class="pres-config-pct" style="display:flex;justify-content:space-between;">
+            <span style="color:var(--expense);">Gastado $${p.gastado} (${p.pct}%)</span>
+            <span style="color:${parseFloat(resto)<0?'var(--danger)':'var(--accent)'};">${parseFloat(resto)>=0?'Restante $'+resto:'Excedido $'+Math.abs(parseFloat(resto))}</span>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button onclick="editarPresupuestoConfig('${fn_esc(p.categoria)}','${fn_esc(p.icono)}',${p.limite})" style="flex:1;background:#1a2a3a;border:1px solid #2a4a5a;border-radius:6px;color:var(--income);font-size:11px;padding:5px;cursor:pointer;">✏️ Editar límite</button>
+            <button onclick="eliminarPresupuestoConfig('${fn_esc(p.categoria)}',this)" style="background:#2a1a1a;border:1px solid #5a2a2a;border-radius:6px;color:var(--danger);font-size:11px;padding:5px 10px;cursor:pointer;">🗑</button>
+          </div>
+        </div>`;
       } else {
-        // Categoría sin límite — mostrar con estado "No definido"
-        return `
-          <div style="background:#111;border:1px dashed #2a2a2a;border-radius:10px;padding:8px 14px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:10px;opacity:0.6;">
-            <div style="flex:1;">
-              <span style="font-size:13px;color:#888;">📌 ${cat}</span>
-              <span style="font-size:11px;color:#444;margin-left:6px;">No definido</span>
-            </div>
-            <button onclick="editarPresupuestoConfig('${cat}','📌','')" style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;color:#555;font-size:11px;padding:4px 8px;cursor:pointer;">+ Definir</button>
-          </div>`;
+        return `<div class="pres-config-row" style="opacity:.6;border-style:dashed;">
+          <div class="pres-config-header">
+            <span class="pres-config-nombre">📌 ${cat}</span>
+            <span style="font-size:11px;color:var(--muted);">Sin límite</span>
+          </div>
+          <button onclick="editarPresupuestoConfig('${fn_esc(cat)}','📌','')" style="width:100%;background:var(--card);border:1px solid var(--card-brd);border-radius:6px;color:var(--muted);font-size:11px;padding:6px;cursor:pointer;margin-top:6px;">+ Definir límite para esta categoría</button>
+        </div>`;
       }
     }).join('');
 
@@ -3549,6 +3806,32 @@ function cargarAjustes() {
   });
 }
 
+async function cargarAjustesCompleto() {
+  cargarAjustes();
+  await initConfig();
+  _renderListaCats();
+  _renderListaMets();
+  cargarPresupuestosConfig();
+  cargarUmbral();
+  _aplicarTituloGuardado();
+  // Restaurar undo pendiente si existe y es de esta semana
+  const savedCat = JSON.parse(localStorage.getItem('otto_undo_cat') || 'null');
+  const savedMet = JSON.parse(localStorage.getItem('otto_undo_met') || 'null');
+  const semana = 7 * 24 * 60 * 60 * 1000;
+  if (savedCat && (Date.now() - savedCat.ts) < semana) {
+    undoCat = savedCat;
+    const banner = document.getElementById('undo-cat-banner');
+    const msg = document.getElementById('undo-cat-msg');
+    if (banner && msg) { msg.textContent = '🗑 "' + savedCat.nombre + '" eliminada'; banner.classList.add('visible'); }
+  }
+  if (savedMet && (Date.now() - savedMet.ts) < semana) {
+    undoMet = savedMet;
+    const banner = document.getElementById('undo-met-banner');
+    const msg = document.getElementById('undo-met-msg');
+    if (banner && msg) { msg.textContent = '🗑 "' + savedMet.nombre + '" eliminado'; banner.classList.add('visible'); }
+  }
+}
+
 function mostrarCambiarUrl() {
   document.getElementById('cambiar-url-form').style.display = 'block';
   const input = document.getElementById('ajustes-url-input');
@@ -3574,6 +3857,36 @@ function cerrarSesion() {
 }
 
 // ── TEMAS ─────────────────────────────────────────────────
+// ── TÍTULO EDITABLE ──────────────────────────────────────
+function _aplicarTituloGuardado() {
+  const titulo  = localStorage.getItem('otto_app_titulo') || 'Otto y 10 lucas';
+  const oculto  = localStorage.getItem('otto_titulo_oculto') === '1';
+  const textEl  = document.getElementById('app-title-text');
+  const inputEl = document.getElementById('cfg-app-titulo');
+  const toggle  = document.getElementById('toggle-titulo');
+  const knob    = document.getElementById('toggle-titulo-knob');
+  if (textEl)  { textEl.textContent = titulo; textEl.classList.toggle('hidden', oculto); }
+  if (inputEl) inputEl.value = titulo;
+  if (toggle)  toggle.style.background = oculto ? 'var(--accent)' : 'var(--card-brd)';
+  if (knob)    knob.style.left = oculto ? '23px' : '3px';
+  // también actualizar config screen
+  const h1cfg = document.querySelector('#config-screen h1');
+  if (h1cfg) h1cfg.textContent = '🪙 ' + titulo;
+}
+
+function guardarTituloApp() {
+  const titulo = document.getElementById('cfg-app-titulo')?.value.trim() || 'Otto y 10 lucas';
+  localStorage.setItem('otto_app_titulo', titulo);
+  _aplicarTituloGuardado();
+  mostrarToast('✅ Nombre actualizado');
+}
+
+function toggleTituloVisible() {
+  const oculto = localStorage.getItem('otto_titulo_oculto') === '1';
+  localStorage.setItem('otto_titulo_oculto', oculto ? '0' : '1');
+  _aplicarTituloGuardado();
+}
+
 function setTema(tema) {
   const html = document.documentElement;
   if (tema === 'forest') html.removeAttribute('data-theme');
