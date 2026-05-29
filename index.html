@@ -1317,7 +1317,25 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 <div class="cola-badge" id="cola-badge" onclick="reintentarCola()"></div>
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Cargar Chart.js con fallback múltiple para evitar bloqueos de navegador
+(function() {
+  function loadChartJS(src, fallback) {
+    const s = document.createElement('script');
+    s.src = src;
+    s.crossOrigin = 'anonymous';
+    s.onerror = function() {
+      if (fallback) loadChartJS(fallback, null);
+      else console.warn('Chart.js no disponible — gráficos deshabilitados');
+    };
+    document.head.appendChild(s);
+  }
+  loadChartJS(
+    'https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js',
+    'https://unpkg.com/chart.js/dist/chart.umd.min.js'
+  );
+})();
+</script>
 <script>
 // ── FASE 5: Arrays dinámicos — se llenan desde get_config al init ──
 let CATS = ["Transporte","Comida","Trámites","Estado cuenta","Tienda","Ocio","Family","Arriendo","Necesidad","Herramienta","Vestimenta","Salud / Cuidado Personal"]; // fallback hasta que cargue config
@@ -1717,8 +1735,7 @@ async function agregarCategoria() {
 }
 
 function pedirEliminarCategoria(nombre, btn) {
-  if (!confirm('¿Eliminar la categoría "' + nombre + '"?
-Los gastos ya registrados conservarán esta categoría.')) return;
+  if (!confirm('¿Eliminar la categoría "' + nombre + '"? Los gastos ya registrados conservarán esta categoría.')) return;
   eliminarCategoria(nombre, btn);
 }
 
@@ -1828,8 +1845,7 @@ async function guardarEditarMetodo() {
 }
 
 function pedirEliminarMetodo(nombre, btn) {
-  if (!confirm('¿Eliminar el método "' + nombre + '"?
-Los gastos ya registrados conservarán este método.')) return;
+  if (!confirm('¿Eliminar el método "' + nombre + '"? Los gastos ya registrados conservarán este método.')) return;
   eliminarMetodo(nombre, btn);
 }
 
