@@ -852,85 +852,6 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
       <div id="dif-lista"><p style="color:#555;font-size:13px;">Cargando...</p></div>
     </div>
 
-    <div class="sub-page" id="sub-configuracion">
-      <button class="back-btn" onclick="volverAnalisis()">← Análisis</button>
-      <div class="umbral-card">
-        <div>
-          <div class="umbral-label">🎯 Umbral diferidos</div>
-          <div class="umbral-sub">Diners/Visa sobre este monto → revisar</div>
-        </div>
-        <div class="umbral-input-wrap">
-          <span style="color:#555;font-size:13px;">$</span>
-          <input class="umbral-input" type="number" id="umbral-input" min="0" max="9999" step="10" value="80" />
-          <button class="umbral-save" onclick="guardarUmbral()">OK</button>
-        </div>
-      </div>
-      <p style="color:#444;font-size:11px;padding:0 2px;line-height:1.6;">Gastos de Diners o Visa iguales o mayores a este monto quedan en "revisar" para que puedas decidir si son diferidos.</p>
-
-      <!-- ── Presupuestos por categoría ── -->
-      <div style="color:#555;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;padding:0 2px;">Presupuestos por categoría</div>
-      <div id="config-pres-lista"><p style="color:#444;font-size:12px;">Cargando...</p></div>
-      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;margin-top:10px;">
-        <div style="color:#888;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Nuevo / editar límite</div>
-        <select id="config-pres-cat" style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:8px;">
-          <option value="">Categoría...</option>
-        </select>
-        <div style="display:flex;gap:8px;margin-bottom:8px;">
-          <input id="config-pres-limite" type="number" placeholder="Límite $" min="0" step="5" style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#7fd4a0;font-size:15px;font-weight:700;padding:9px 10px;flex:1;outline:none;" />
-          <input id="config-pres-icono" type="text" placeholder="Icono" style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;padding:9px 10px;width:52px;outline:none;text-align:center;" />
-        </div>
-        <button onclick="guardarPresupuestoConfig()" style="width:100%;background:#1a3a2a;border:1px solid #2a5a3a;border-radius:8px;color:#7fd4a0;font-size:13px;font-weight:600;padding:10px;cursor:pointer;">Guardar límite</button>
-      </div>
-    </div>
-
-    <!-- ── Sub-página: Categorías y Métodos de Pago (Fase 5) ── -->
-    <div class="sub-page" id="sub-cats-mets">
-      <button class="back-btn" onclick="volverAnalisis()">← Análisis</button>
-
-      <!-- SECCIÓN CATEGORÍAS -->
-      <div style="color:#555;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding:0 2px;">Categorías de gasto</div>
-      <div id="config-cats-lista" style="margin-bottom:14px;"><p style="color:#444;font-size:12px;">Cargando...</p></div>
-
-      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;margin-bottom:22px;">
-        <div style="color:#888;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Nueva categoría</div>
-        <div style="display:flex;gap:8px;margin-bottom:8px;">
-          <input id="nueva-cat-nombre" type="text" placeholder="Nombre (ej: Educación)"
-            style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;padding:9px 10px;flex:1;outline:none;" />
-          <input id="nueva-cat-icono" type="text" placeholder="📚"
-            style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;padding:9px 10px;width:52px;outline:none;text-align:center;" />
-        </div>
-        <button onclick="agregarCategoria()"
-          style="width:100%;background:#1a3a2a;border:1px solid #2a5a3a;border-radius:8px;color:#7fd4a0;font-size:13px;font-weight:600;padding:10px;cursor:pointer;">+ Agregar categoría</button>
-      </div>
-
-      <!-- SECCIÓN MÉTODOS DE PAGO -->
-      <div style="color:#555;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding:0 2px;">Métodos de pago</div>
-      <div id="config-mets-lista" style="margin-bottom:14px;"><p style="color:#444;font-size:12px;">Cargando...</p></div>
-
-      <div style="background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:14px;">
-        <div style="color:#888;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Nuevo método de pago</div>
-        <div style="display:flex;gap:8px;margin-bottom:8px;">
-          <input id="nuevo-met-nombre" type="text" placeholder="Nombre (ej: Mastercard)"
-            style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;padding:9px 10px;flex:1;outline:none;" />
-          <input id="nuevo-met-icono" type="text" placeholder="💳"
-            style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:14px;padding:9px 10px;width:52px;outline:none;text-align:center;" />
-        </div>
-        <select id="nuevo-met-tipo" onchange="toggleCorteNuevo(this.value)"
-          style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:8px;">
-          <option value="debito">Débito</option>
-          <option value="credito">Tarjeta de crédito</option>
-          <option value="efectivo">Efectivo</option>
-        </select>
-        <div id="nuevo-met-corte-wrap" style="display:none;margin-bottom:8px;">
-          <input id="nuevo-met-corte" type="number" placeholder="Día de corte (ej: 14)" min="1" max="31"
-            style="background:#1a1a1a;border:1px solid #333;border-radius:8px;color:#e8a838;font-size:13px;padding:9px 10px;width:100%;outline:none;" />
-          <p style="color:#555;font-size:11px;margin-top:4px;line-height:1.4;">El día de corte define hasta cuándo van los gastos al estado de cuenta de este mes. Ej: corte 14 → gastos del 15 al 14 del siguiente mes.</p>
-        </div>
-        <button onclick="agregarMetodo()"
-          style="width:100%;background:#1a2a3a;border:1px solid #2a4a6a;border-radius:8px;color:#7fb4d4;font-size:13px;font-weight:600;padding:10px;cursor:pointer;">+ Agregar método</button>
-      </div>
-    </div>
-
   </div><!-- /page-analisis -->
 
   <!-- ── CUENTAS POR COBRAR ── -->
@@ -1245,69 +1166,112 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); }
 
   <!-- Umbral diferidos -->
   <div class="ajuste-config-section">
-    <div class="ajuste-config-title">Umbral de diferidos</div>
-    <p style="color:var(--text-sub);font-size:12px;margin-bottom:10px;line-height:1.5;">Gastos de tarjeta de crédito iguales o mayores a este monto quedan en "revisar" para que decidas si son diferidos.</p>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span style="color:var(--muted);font-size:13px;">$</span>
-      <input class="umbral-input" type="number" id="umbral-input" min="0" max="9999" step="10" value="80" style="flex:1;" />
-      <button class="umbral-save" onclick="guardarUmbral()">Guardar</button>
+    <button onclick="togglePanel('panel-umbral')" style="width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">🎯</span>
+        <div style="text-align:left;">
+          <div style="font-size:14px;font-weight:600;color:var(--text);">Umbral de diferidos</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;" id="umbral-preview">Cargando...</div>
+        </div>
+      </div>
+      <span style="color:var(--muted);font-size:16px;" id="arrow-panel-umbral">›</span>
+    </button>
+    <div id="panel-umbral" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--card-brd);">
+      <p style="color:var(--text-sub);font-size:12px;margin-bottom:10px;line-height:1.5;">Gastos de TC iguales o mayores a este monto quedan en "revisar".</p>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="color:var(--muted);font-size:13px;">$</span>
+        <input class="umbral-input" type="number" id="umbral-input" min="0" max="9999" step="10" value="80" style="flex:1;" />
+        <button class="umbral-save" onclick="guardarUmbral()">Guardar</button>
+      </div>
     </div>
   </div>
 
   <!-- Presupuestos -->
   <div class="ajuste-config-section">
-    <div class="ajuste-config-title">Presupuestos por categoría</div>
-    <p style="color:var(--text-sub);font-size:12px;margin-bottom:12px;line-height:1.5;">Define un límite mensual para cada categoría. La app te avisa cuando te acercas o lo superas.</p>
-    <div id="config-pres-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
-    <div style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:10px;padding:12px;margin-top:10px;">
-      <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Agregar / editar límite</div>
-      <select id="config-pres-cat" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:8px;"><option value="">Categoría...</option></select>
-      <div style="display:flex;gap:8px;margin-bottom:8px;">
-        <input id="config-pres-limite" type="number" placeholder="Límite $" min="0" step="5" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--accent);font-size:15px;font-weight:700;padding:9px 10px;flex:1;outline:none;" />
-        <input id="config-pres-icono" type="text" placeholder="📌" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px 10px;width:52px;outline:none;text-align:center;" />
+    <button onclick="togglePanel('panel-pres')" style="width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">🎯</span>
+        <div style="text-align:left;">
+          <div style="font-size:14px;font-weight:600;color:var(--text);">Presupuestos</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;">Límites por categoría</div>
+        </div>
       </div>
-      <button onclick="guardarPresupuestoConfig()" style="width:100%;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;">Guardar límite</button>
+      <span style="color:var(--muted);font-size:16px;" id="arrow-panel-pres">›</span>
+    </button>
+    <div id="panel-pres" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--card-brd);">
+      <div id="config-pres-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
+      <div style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:10px;padding:12px;margin-top:10px;">
+        <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Agregar / editar</div>
+        <select id="config-pres-cat" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:8px;"><option value="">Categoría...</option></select>
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <input id="config-pres-limite" type="number" placeholder="Límite $" min="0" step="5" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--accent);font-size:15px;font-weight:700;padding:9px 10px;flex:1;outline:none;" />
+          <input id="config-pres-icono" type="text" placeholder="📌" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px 10px;width:52px;outline:none;text-align:center;" />
+        </div>
+        <button onclick="guardarPresupuestoConfig()" style="width:100%;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;">Guardar límite</button>
+      </div>
     </div>
   </div>
 
   <!-- Categorías -->
   <div class="ajuste-config-section">
-    <div class="ajuste-config-title">Categorías de gasto</div>
-    <div class="undo-banner" id="undo-cat-banner">
-      <span id="undo-cat-msg"></span>
-      <button class="undo-btn" onclick="undoEliminarCategoria()">↩ Deshacer</button>
-    </div>
-    <div id="config-cats-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
-    <div style="display:flex;gap:8px;margin-top:10px;">
-      <input id="nueva-cat-icono" type="text" placeholder="📌" style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px;width:48px;outline:none;text-align:center;" />
-      <input id="nueva-cat-nombre" type="text" placeholder="Nombre de la categoría..." style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;flex:1;outline:none;" />
-      <button onclick="agregarCategoria()" style="background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:9px 12px;cursor:pointer;">+</button>
+    <button onclick="togglePanel('panel-cats')" style="width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">🏷️</span>
+        <div style="text-align:left;">
+          <div style="font-size:14px;font-weight:600;color:var(--text);">Categorías de gasto</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;" id="cats-preview">Cargando...</div>
+        </div>
+      </div>
+      <span style="color:var(--muted);font-size:16px;" id="arrow-panel-cats">›</span>
+    </button>
+    <div id="panel-cats" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--card-brd);">
+      <div class="undo-banner" id="undo-cat-banner">
+        <span id="undo-cat-msg"></span>
+        <button class="undo-btn" onclick="undoEliminarCategoria()">↩ Deshacer</button>
+      </div>
+      <div id="config-cats-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <input id="nueva-cat-icono" type="text" placeholder="📌" style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px;width:48px;outline:none;text-align:center;" />
+        <input id="nueva-cat-nombre" type="text" placeholder="Nueva categoría..." style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;flex:1;outline:none;" onkeydown="if(event.key==='Enter')agregarCategoria()" />
+        <button onclick="agregarCategoria()" style="background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:9px 12px;cursor:pointer;">+</button>
+      </div>
     </div>
   </div>
 
   <!-- Métodos de pago -->
   <div class="ajuste-config-section">
-    <div class="ajuste-config-title">Métodos de pago</div>
-    <div class="undo-banner" id="undo-met-banner">
-      <span id="undo-met-msg"></span>
-      <button class="undo-btn" onclick="undoEliminarMetodo()">↩ Deshacer</button>
-    </div>
-    <div id="config-mets-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
-    <div style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:10px;padding:12px;margin-top:10px;">
-      <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Nuevo método</div>
-      <div style="display:flex;gap:8px;margin-bottom:8px;">
-        <input id="nuevo-met-icono" type="text" placeholder="💳" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px;width:48px;outline:none;text-align:center;" />
-        <input id="nuevo-met-nombre" type="text" placeholder="Nombre del método..." style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;flex:1;outline:none;" />
+    <button onclick="togglePanel('panel-mets')" style="width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">💳</span>
+        <div style="text-align:left;">
+          <div style="font-size:14px;font-weight:600;color:var(--text);">Métodos de pago</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:1px;" id="mets-preview">Cargando...</div>
+        </div>
       </div>
-      <select id="nuevo-met-tipo" onchange="toggleCorteNuevo(this.value)" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:8px;">
-        <option value="debito">Débito / Efectivo</option>
-        <option value="credito">Tarjeta de crédito</option>
-      </select>
-      <div id="nuevo-met-corte-wrap" class="met-corte-field">
-        <input id="nuevo-met-corte" type="number" placeholder="Día de corte (ej: 14)" min="1" max="31" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--warn);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:4px;" />
-        <p style="color:var(--muted);font-size:11px;line-height:1.4;">El corte define hasta qué día van los gastos al estado de cuenta de este mes. Ej: corte 14 → gastos del 15 al 14 del mes siguiente se cobran juntos.</p>
+      <span style="color:var(--muted);font-size:16px;" id="arrow-panel-mets">›</span>
+    </button>
+    <div id="panel-mets" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--card-brd);">
+      <div class="undo-banner" id="undo-met-banner">
+        <span id="undo-met-msg"></span>
+        <button class="undo-btn" onclick="undoEliminarMetodo()">↩ Deshacer</button>
       </div>
-      <button onclick="agregarMetodo()" style="width:100%;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;margin-top:8px;">+ Agregar método</button>
+      <div id="config-mets-lista"><p style="color:var(--muted);font-size:12px;">Cargando...</p></div>
+      <div style="background:var(--input-bg);border:1px solid var(--card-brd);border-radius:10px;padding:12px;margin-top:10px;">
+        <div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Nuevo método</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <input id="nuevo-met-icono" type="text" placeholder="💳" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:14px;padding:9px;width:48px;outline:none;text-align:center;" />
+          <input id="nuevo-met-nombre" type="text" placeholder="Nombre del método..." style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;flex:1;outline:none;" onkeydown="if(event.key==='Enter')agregarMetodo()" />
+        </div>
+        <select id="nuevo-met-tipo" onchange="toggleCorteNuevo(this.value)" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--text);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:8px;">
+          <option value="debito">Débito / Efectivo</option>
+          <option value="credito">Tarjeta de crédito</option>
+        </select>
+        <div id="nuevo-met-corte-wrap" class="met-corte-field">
+          <input id="nuevo-met-corte" type="number" placeholder="Día de corte (ej: 14)" min="1" max="31" style="background:var(--card);border:1px solid var(--card-brd);border-radius:8px;color:var(--warn);font-size:13px;padding:9px 10px;width:100%;outline:none;margin-bottom:4px;" />
+          <p style="color:var(--muted);font-size:11px;line-height:1.4;">El corte define hasta qué día van los gastos al estado de cuenta de este mes.</p>
+        </div>
+        <button onclick="agregarMetodo()" style="width:100%;background:var(--accent-dim);border:1px solid var(--accent-brd);border-radius:8px;color:var(--accent);font-size:13px;font-weight:600;padding:10px;cursor:pointer;margin-top:8px;">+ Agregar método</button>
+      </div>
     </div>
   </div>
 
@@ -1526,18 +1490,18 @@ function poblarUIConConfig() {
 }
 
 function _poblarPills() {
-  // Poblar select de categoría en registro
+  const cats = CONFIG_CATS.length ? CONFIG_CATS : CATS.map(n => ({ nombre: n, icono: '📌' }));
+  const mets = CONFIG_METS.length ? CONFIG_METS : METS.map(n => ({ nombre: n, icono: '💳' }));
   const catSel = document.getElementById('reg-cat');
   if (catSel) {
     catSel.innerHTML = '<option value="">Selecciona categoría...</option>' +
-      CONFIG_CATS.map(c => `<option value="${fn_esc(c.nombre)}">${c.icono} ${c.nombre}</option>`).join('');
+      cats.map(c => `<option value="${fn_esc(c.nombre)}">${c.icono} ${c.nombre}</option>`).join('');
     if (selectedCat) catSel.value = selectedCat;
   }
-  // Poblar select de método en registro
   const metSel = document.getElementById('reg-met');
   if (metSel) {
     metSel.innerHTML = '<option value="">Selecciona método...</option>' +
-      CONFIG_METS.map(m => `<option value="${fn_esc(m.nombre)}">${m.icono} ${m.nombre}</option>`).join('');
+      mets.map(m => `<option value="${fn_esc(m.nombre)}">${m.icono} ${m.nombre}</option>`).join('');
     if (selectedMet) metSel.value = selectedMet;
   }
 }
@@ -1591,11 +1555,16 @@ function _poblarFiltrosHistorial() {
 function _poblarBotonesHome() {
   const grid = document.getElementById('home-cats-grid');
   if (!grid) return;
-  grid.innerHTML = CATS.map(c => {
-    const cfg = CONFIG_CATS.find(x => x.nombre === c);
-    const icono = cfg ? cfg.icono : '📌';
-    return `<button class="btn" onclick="abrirSheetFn(()=>detalleCat('${c.replace(/'/g,"\'")}'))">
-      <span class="icon">${icono}</span><span class="label">${c}</span>
+  const cats = CONFIG_CATS.length ? CONFIG_CATS : CATS.map(n => ({ nombre: n, icono: '📌' }));
+  if (!cats.length) return;
+  const gastosMap = {};
+  const cachedChart = leerCache('chart');
+  if (cachedChart?.data?.gastos) cachedChart.data.gastos.forEach(g => { gastosMap[g.nombre] = g.valor; });
+  grid.innerHTML = cats.map(cfg => {
+    const gasto = gastosMap[cfg.nombre] || 0;
+    const gastoStr = gasto > 0 ? `<span class="home-btn-gasto">$${r(gasto)}</span>` : '';
+    return `<button class="btn" onclick="abrirSheetFn(()=>detalleCat('${fn_esc(cfg.nombre)}'))">
+      <span class="icon">${cfg.icono}</span><span class="label">${cfg.nombre}</span>${gastoStr}
     </button>`;
   }).join('');
 }
@@ -1603,13 +1572,21 @@ function _poblarBotonesHome() {
 function _poblarBotonesTarjeta() {
   const grid = document.getElementById('home-mets-grid');
   if (!grid) return;
-  // Solo mostrar tarjetas de crédito (tienen rango de corte) en el botón de detalle por tarjeta
-  // Los de débito/efectivo no generan un "detalle" separado con rango
-  grid.innerHTML = METS.map(m => {
-    const cfg = CONFIG_METS.find(x => x.nombre === m);
-    const icono = cfg ? cfg.icono : '💳';
-    return `<button class="btn amber" onclick="abrirSheetFn(()=>detalleCatMet('${fn_esc(cfg.nombre)}'))">
-      <span class="icon">${icono}</span>${m}
+  const mets = CONFIG_METS.length ? CONFIG_METS : METS.map(n => ({ nombre: n, icono: '💳', tipo: 'debito', diaCobro: 0 }));
+  if (!mets.length) return;
+  const gastosHist = {};
+  const cachedHist = leerCache('historial');
+  if (cachedHist?.data) {
+    cachedHist.data.forEach(item => {
+      if (!gastosHist[item.metodo]) gastosHist[item.metodo] = 0;
+      if (item.tipo !== 'ingreso') gastosHist[item.metodo] += parseFloat(item.monto) || 0;
+    });
+  }
+  grid.innerHTML = mets.map(m => {
+    const gasto = gastosHist[m.nombre] || 0;
+    const gastoStr = gasto > 0 ? `<span class="home-btn-gasto">$${r(gasto)}</span>` : '';
+    return `<button class="btn amber" onclick="abrirSheetFn(()=>detalleCatMet('${fn_esc(m.nombre)}'))">
+      <span class="icon">${m.icono}</span><span>${m.nombre}</span>${gastoStr}
     </button>`;
   }).join('');
 }
@@ -2729,67 +2706,65 @@ async function verImpactoSiguiente() {
     const res  = await fetch(urlConMes('impacto_siguiente'), { redirect: 'follow' });
     const data = await res.json();
 
-    const hayTC   = data.gastosTC   && data.gastosTC.length   > 0;
-    const hayDif  = data.diferidos  && data.diferidos.length  > 0;
-    const haySubs = data.suscripciones && data.suscripciones.length > 0;
+    const gastosTC   = data.gastosTC   || [];
+    const diferidos  = data.diferidos  || [];
+    const suscripciones = data.suscripciones || [];
 
-    if (!hayTC && !hayDif && !haySubs) {
-      bodyEl.innerHTML = '<p style="color:#7fd4a0;font-size:13px;">✅ Sin compromisos conocidos para el mes siguiente.</p>';
+    if (!gastosTC.length && !diferidos.length && !suscripciones.length) {
+      bodyEl.innerHTML = '<p style="color:var(--accent);font-size:13px;">✅ Sin compromisos para el mes siguiente.</p>';
       return;
     }
 
-    const mesesDisplay = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-    const mesActNombre = mesesDisplay[(mesSeleccionado - 1 + 12) % 12];
-
-    function seccion(titulo, subtitulo, items, total, colorAccent) {
-      if (!items || !items.length) return '';
-      return `
-        <div style="margin-bottom:16px;">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
-            <div>
-              <span style="font-size:12px;font-weight:700;color:${colorAccent};">${titulo}</span>
-              ${subtitulo ? `<span style="font-size:11px;color:#555;margin-left:6px;">${subtitulo}</span>` : ''}
-            </div>
-            <span style="font-size:13px;font-weight:700;color:${colorAccent};">$${total.toFixed(2)}</span>
-          </div>
-          ${items.map(it => `
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1a1a1a;font-size:13px;">
-              <div style="flex:1;min-width:0;">
-                <div style="color:#d0d0d0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${it.descripcion || it.nombre}</div>
-                <div style="font-size:11px;color:#555;margin-top:1px;">${it.metodo || '—'}${it.diaCobro ? ' · día ' + it.diaCobro : ''}${it.fecha ? ' · ' + it.fecha : ''}</div>
-              </div>
-              <span style="color:#e07070;font-weight:600;margin-left:10px;white-space:nowrap;">$${it.monto.toFixed(2)}</span>
-            </div>`).join('')}
-        </div>`;
-    }
-
-    const intro = `<div style="font-size:12px;color:#888;margin-bottom:16px;line-height:1.5;">
-      Compromisos de <strong style="color:#e0e0e0;">${mesActNombre}</strong> que se cobrarán en
-      <strong style="color:#d4a0f0;">${data.mesImpacto}</strong>:
+    // ── Resumen total arriba ──
+    let html = `<div style="background:var(--accent-deep);border:1px solid var(--accent-brd);border-radius:12px;padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Total en ${data.mesImpacto}</div>
+        <div style="font-size:11px;color:var(--text-sub);margin-top:2px;">TC $${r(data.totalTC||0)} + Diferidos $${r(data.totalDif||0)} + Subs $${r(data.totalSubs||0)}</div>
+      </div>
+      <div style="font-size:24px;font-weight:700;color:var(--expense);">$${r(data.total||0).toFixed(2)}</div>
     </div>`;
 
-    // Agrupar gastos TC por método de pago para mejor lectura
-    const porMetodo = {};
-    (data.gastosTC || []).forEach(it => {
-      if (!porMetodo[it.metodo]) porMetodo[it.metodo] = [];
-      porMetodo[it.metodo].push(it);
-    });
-    const tcSeccion = Object.entries(porMetodo).map(([metodo, items]) => {
-      const sub = r(items.reduce((s,x) => s+x.monto, 0));
-      return seccion('💳 ' + metodo, 'post-corte', items, sub, '#e8a838');
-    }).join('');
-
-    const difSeccion  = seccion('🔄 Diferidos', 'próxima cuota de cada uno', data.diferidos || [], data.totalDif || 0, '#7fb4d4');
-    const subsSeccion = seccion('📋 Suscripciones', 'cobro mensual', data.suscripciones || [], data.totalSubs || 0, '#a0d4b8');
-
-    const totalBar = `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid #2a2a2a;margin-top:4px;">
-        <span style="font-size:13px;color:#888;font-weight:600;">Total comprometido en ${data.mesImpacto}</span>
-        <span style="font-size:18px;font-weight:700;color:#e07070;">$${(data.total||0).toFixed(2)}</span>
+    // ── Función fila compacta ──
+    function fila(icono, desc, meta, monto, color) {
+      return `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--card-brd);">
+        <span style="font-size:16px;flex-shrink:0;">${icono}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${desc}</div>
+          ${meta ? `<div style="font-size:11px;color:var(--muted);margin-top:1px;">${meta}</div>` : ''}
+        </div>
+        <span style="font-size:13px;font-weight:600;color:${color};flex-shrink:0;">$${r(monto).toFixed(2)}</span>
       </div>`;
+    }
 
-    bodyEl.innerHTML = intro + tcSeccion + difSeccion + subsSeccion + totalBar;
+    // ── Gastos TC post-corte (agrupados por método) ──
+    if (gastosTC.length) {
+      const porMet = {};
+      gastosTC.forEach(x => { if (!porMet[x.metodo]) porMet[x.metodo] = []; porMet[x.metodo].push(x); });
+      html += `<div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px;">💳 TC post-corte · $${r(data.totalTC||0).toFixed(2)}</div>`;
+      Object.entries(porMet).forEach(([met, items]) => {
+        items.forEach(x => {
+          html += fila('💳', x.descripcion || x.nombre, `${met} · ${x.fecha||''}`, x.monto, 'var(--warn)');
+        });
+      });
+    }
 
+    // ── Diferidos ──
+    if (diferidos.length) {
+      html += `<div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px;">📦 Diferidos · $${r(data.totalDif||0).toFixed(2)}</div>`;
+      diferidos.forEach(x => {
+        html += fila('📦', x.nombre, `${x.metodo||''}${x.diaCobro?' · día '+x.diaCobro:''}`, x.monto, 'var(--income)');
+      });
+    }
+
+    // ── Suscripciones ──
+    if (suscripciones.length) {
+      html += `<div style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px;">🔄 Suscripciones · $${r(data.totalSubs||0).toFixed(2)}</div>`;
+      suscripciones.forEach(x => {
+        html += fila('🔄', x.nombre, `${x.metodo||''}${x.diaCobro?' · día '+x.diaCobro:''}`, x.monto, 'var(--text-sub)');
+      });
+    }
+
+    bodyEl.innerHTML = html;
   } catch(e) {
     bodyEl.innerHTML = '<span class="error">Error al cargar: ' + e.message + '</span>';
   }
@@ -3609,9 +3584,12 @@ async function cargarUmbral() {
     const res = await fetch(scriptUrl + '?cmd=get_umbral', { redirect: 'follow' });
     const data = await res.json();
     if (data.umbral !== undefined) {
-      document.getElementById('umbral-input').value = data.umbral;
+      const el = document.getElementById('umbral-input');
+      if (el) el.value = data.umbral;
+      const prev = document.getElementById('umbral-preview');
+      if (prev) prev.textContent = 'TC ≥ $' + data.umbral + ' → revisar';
     }
-  } catch(e) { mostrarToast('Error al cargar umbral'); }
+  } catch(e) {}
 }
 
 async function guardarUmbral() {
@@ -3822,6 +3800,15 @@ function cargarAjustes() {
   });
 }
 
+function togglePanel(id) {
+  const panel = document.getElementById(id);
+  const arrow = document.getElementById('arrow-' + id);
+  if (!panel) return;
+  const open = panel.style.display !== 'none';
+  panel.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.textContent = open ? '›' : '⌄';
+}
+
 async function cargarAjustesCompleto() {
   cargarAjustes();
   await initConfig();
@@ -3830,6 +3817,12 @@ async function cargarAjustesCompleto() {
   cargarPresupuestosConfig();
   cargarUmbral();
   _aplicarTituloGuardado();
+  // Actualizar previews de los botones colapsables
+  const catsP = document.getElementById('cats-preview');
+  const metsP = document.getElementById('mets-preview');
+  const umbralP = document.getElementById('umbral-preview');
+  if (catsP) catsP.textContent = CONFIG_CATS.length + ' categoría' + (CONFIG_CATS.length!==1?'s':'') + ' configurada' + (CONFIG_CATS.length!==1?'s':'');
+  if (metsP) metsP.textContent = CONFIG_METS.length + ' método' + (CONFIG_METS.length!==1?'s':'') + ' configurado' + (CONFIG_METS.length!==1?'s':'');
   // Restaurar undo pendiente si existe y es de esta semana
   const savedCat = JSON.parse(localStorage.getItem('otto_undo_cat') || 'null');
   const savedMet = JSON.parse(localStorage.getItem('otto_undo_met') || 'null');
